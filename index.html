@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Test</title>
+    <style type="text/css">
+        * {
+            padding: 0;
+            margin: 0;
+        }
+
+        canvas {
+            position: absolute;
+            border: 1px solid black;
+            background: #eee;
+            display: block;
+            margin: 0 auto;
+        }
+
+    </style>
+</head>
+
+<body>
+    <canvas id="gameCanvas" width="480" height="320"></canvas>
+    <script>
+        var c, ctx;
+
+        window.onload = function() {
+            c = document.getElementById("gameCanvas");
+            ctx = c.getContext("2d");
+            setInterval(mainLoop, 1000 / 50);
+            document.addEventListener('keydown', keyPressed);
+            document.addEventListener('keyup', keyReleased);
+        };
+
+        function mainLoop() {
+            colorRect(0, 0, c.width, c.height, '#eee')
+            colorRect(ballX, ballY, ballSize, ballSize, 'blue');
+            colorRect(paddleX, paddleY, paddleSizeX, paddleSizeY, 'black');
+
+            ballMove();
+            paddleY = c.height - 15;
+
+            if (startingPos) {
+                startPos();
+                startingPos = false;
+            };
+
+
+            paddleMove();
+        };
+
+        function colorRect(x, y, w, h, color) {
+            ctx.fillStyle = color;
+            ctx.fillRect(x, y, w, h);
+        };
+
+        //ball
+        var ballX = 50;
+        var ballY = 50;
+        var ballSpeedX = 4;
+        var ballSpeedY = 4;
+        var ballSize = 20;
+        var startingPos = true;
+
+        function startPos() {
+            ballX = c.width / 2 - ballSize / 2;
+            ballY = c.height / 2 - ballSize / 2;
+        };
+
+        if (startingPos) {
+            var posNegX = Math.random() * 1;
+            console.log(posNegX)
+            if (posNegX < .5) {
+                ballSpeedX = ballSpeedX * -1
+            }
+            var posNegY = Math.random() * 1;
+            console.log(posNegY)
+            if (posNegY < .5) {
+                ballSpeedY = ballSpeedY * -1
+            }
+        };
+
+        function ballMove() {
+            ballX = ballX + ballSpeedX;
+            ballY = ballY + ballSpeedY;
+
+            if (ballX > paddleX - ballSize && ballX < paddleX + paddleSizeX && ballY > paddleY - ballSize) {
+                ballSpeedY = ballSpeedY * -1;
+            };
+
+            if (ballX > c.width - ballSize) {
+                ballSpeedX = ballSpeedX * -1;
+            };
+            if (ballY > c.height - ballSize) {
+                ballSpeedY = ballSpeedY * -1;
+            };
+            if (ballX < 0) {
+                ballSpeedX = ballSpeedX * -1;
+            };
+            if (ballY < 0) {
+                ballSpeedY = ballSpeedY * -1;
+            };
+        };
+
+        //paddle 
+        const LEFT_ARROW = 37;
+        const RIGHT_ARROW = 39;
+        var leftArrowPressed = false;
+        var rightArrowPressed = false;
+        var paddleX = 10;
+        var paddleY = 0;
+        var paddleSizeX = 100;
+        var paddleSizeY = 10;
+        var paddleSpeed = 6;
+
+
+
+        function keyPressed(evt) {
+            if (evt.keyCode == LEFT_ARROW) {
+                leftArrowPressed = true;
+            };
+            if (evt.keyCode == RIGHT_ARROW) {
+                rightArrowPressed = true;
+            };
+        };
+
+        function keyReleased(evt) {
+            if (evt.keyCode == LEFT_ARROW) {
+                leftArrowPressed = false;
+            };
+            if (evt.keyCode == RIGHT_ARROW) {
+                rightArrowPressed = false;
+            };
+        };
+
+        function paddleMove() {
+            if (leftArrowPressed) {
+                paddleX -= paddleSpeed;
+            };
+            if (rightArrowPressed) {
+                paddleX += paddleSpeed;
+            };
+
+            if (paddleX > c.width - paddleSizeX) {
+                paddleX =  paddleX - 6;
+            };
+            if (paddleX < 0) {
+                paddleX =  paddleX + 6;
+            };
+        };
+
+    </script>
+</body>
+
+</html>
