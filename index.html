@@ -46,7 +46,7 @@
                 startingPos = false;
             };
 
-
+            drawBricks();
             paddleMove();
         };
 
@@ -143,12 +143,57 @@
             };
 
             if (paddleX > c.width - paddleSizeX) {
-                paddleX =  paddleX - 6;
+                paddleX = paddleX - 6;
             };
             if (paddleX < 0) {
-                paddleX =  paddleX + 6;
+                paddleX = paddleX + 6;
             };
         };
+
+        //Brick
+
+        var brickRows = 3;
+        var brickColumns = 5;
+        var brickWidth = 37;
+        var brickHeight = 20;
+        var brickPadding = 10;
+        var brickOffset = 30;
+        var brickCount = 0;
+
+        var bricks = [];
+        for (var c = 0; c < brickColumns; c++) {
+            bricks[c] = [];
+            for (var r = 0; r < brickRows; r++) {
+                bricks[c][r] = {
+                    x: 0,
+                    y: 0
+                };
+            }
+        }
+
+        /*       function brickObjects(){
+                   brickCount++;
+                   var BrickXpos = brickWidth * brickCount;
+                   var brickYpos = 0 
+                   if(brickCount > brickColoumns){
+                      brickCount = 0;
+                      }
+               }
+               */
+
+        function drawBricks() {
+            for (var c = 0; c < brickColumns; c++) {
+                for (var r = 0; r < brickRows; r++) {
+                    bricks[c][r].x = 0;
+                    bricks[c][r].y = 0;
+                    ctx.beginPath();
+                    ctx.rect(0, 0, brickWidth, brickHeight);
+                    ctx.fillStyle = "#0095DD";
+                    ctx.fill();
+                    ctx.closePath();
+                }
+            }
+        }
 
     </script>
 </body>
